@@ -25,8 +25,9 @@ Please navigate into 'Windows' directory and refer to its README.
 **Linux:**  
 This directory contains c++ project to build 32bit/64bit 'japlauncher' for Linux.  
 You can build 32bit/64bit executable in 64bit linux.  
-Rename the executable to 'JonDoLauncher32' for 32bit and 'JonDoLauncher64' for 64bit.  
-Copy them into 'jondobrowser-build/projects/tor-browser/JonDo/JonDo_Linux/'.  
+Install prerequisites with the following command.  
+`sudo apt-get install gcc-multilib g++-multilib`  
+After successful make, copy executables into 'jondobrowser-build/projects/tor-browser/JonDo/JonDo_Linux/'.  
 
 **OSX:**  
 This directory contains c++ project to build 64bit 'japlauncher' for MacOS.  

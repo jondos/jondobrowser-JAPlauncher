@@ -5,7 +5,7 @@ Intro:
 		jdk 1.8.
 
 Usage:
-	Copy 'JAP.jar' into 'dist/' directory.
+	Copy 'JAP.jar' into 'appbundler/dist/' directory.
 	Run `ant bundle-jap`.
 	This will create 'JAP.app' in 'dist/' directory.
 

@@ -25,16 +25,8 @@ string exec(const char* cmd) {
 }
 
 int main(int argc, char*argv[]){
-    if(argc == 3){
-        char* javaExeRPath = "/Contents/JAP.app/Contents/MacOS/JavaAppLauncher\" --hideUpdate &";
-        char* javaExePPath = new char [strlen(argv[1]) + strlen(javaExeRPath) + 2];
-        strcpy(javaExePPath, "\"");
-        strcat(javaExePPath, argv[1]);
-        strcat(javaExePPath, javaExeRPath);
-        printf("%s\n",javaExePPath);
-
+    if(argc >= 3){
     	string res = exec("ps aux | grep \"[J]AP.app\" | wc -l");
-
         bool isJavaRunning = false;
         for(int i = 0; i < res.length(); i++){
             if(res[i] == (char)'0'){
@@ -45,7 +37,18 @@ int main(int argc, char*argv[]){
             }
         }
     	if(!isJavaRunning && strcmp(argv[2], "on") == 0){
-    		system(javaExePPath);
+            char command[1024];
+            strcpy(command, "\"");
+            strcat(command, argv[1]);                                                //JonDoBrowser.app absolute path
+            strcat(command, "/Contents/JAP.app/Contents/MacOS/JavaAppLauncher");   //JavaAppLauncher relative path
+            strcat(command, "\"");
+            for (int i = 3; i < argc; i++){
+                strcat(command, " ");
+                strcat(command, argv[i]);
+            }
+            strcat(command, " &");
+            printf("%s\n", command);
+    		system(command);
     	}
         if(isJavaRunning && strcmp(argv[2], "off") == 0){
             system("pkill -f 'JAP.app' &");

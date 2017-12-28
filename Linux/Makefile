@@ -1,6 +1,5 @@
-all: JonDoLauncher
-JonDoLauncher: JonDoLauncher.o
-	g++ JonDoLauncher.o -o JonDoLauncher
-	rm JonDoLauncher.o
-JonDoLauncher.o:
-	g++ -c JonDoLauncher.c -std=c++11
+all: JonDoLauncher64 JonDoLauncher32
+JonDoLauncher32:
+	g++ -m32 JonDoLauncher.c -o JonDoLauncher32 -std=c++11
+JonDoLauncher64:
+	g++ -m64 JonDoLauncher.c -o JonDoLauncher64 -std=c++11

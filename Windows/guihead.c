@@ -31,6 +31,9 @@
 #include "../resource.h"
 #include "../head.h"
 #include "guihead.h"
+#include "stdio.h"
+
+//#define DEBUG_ENABLED
 
 extern FILE* hLog;
 extern PROCESS_INFORMATION processInformation;
@@ -49,8 +52,30 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                      LPSTR     lpCmdLine,
                      int       nCmdShow)
 {
-    // Feature #1892 - malware recognition problem
+    BOOL escapeCharFound = TRUE;
     int paramLen = strlen(lpCmdLine);
+    int i, j;
+    /* remove unnecessary escape characters before double quotes */
+    while(escapeCharFound){
+    	escapeCharFound = FALSE;
+    	paramLen = strlen(lpCmdLine);
+    	for (i = 0; i < paramLen - 1; i++){
+    		if(lpCmdLine[i] == '\\' && lpCmdLine[i + 1] == '\"'){
+    			escapeCharFound = TRUE;
+    			for (j = i; j >= 1; j--){
+    				lpCmdLine[j] = lpCmdLine[j - 1];
+    			}
+    			lpCmdLine = lpCmdLine + 1;
+    		}
+    	}                
+    }
+#ifdef DEBUG_ENABLED
+    FILE * fp;
+    fp = fopen ("file.txt", "w+");
+    fprintf(fp, "%s\n", lpCmdLine);
+#endif   
+    // Feature #1892 - malware recognition problem
+    paramLen = strlen(lpCmdLine);
     if (paramLen >= 2 && lpCmdLine[0] == 'o' && lpCmdLine[1] == 'n'){
         if (paramLen == 2)
             lpCmdLine = lpCmdLine + 2;
@@ -60,10 +85,13 @@ int APIENTRY WinMain(HINSTANCE hInstance,
     else if (paramLen >= 3 && lpCmdLine[0] == 'o' && lpCmdLine[1] == 'f' && lpCmdLine[2] == 'f'){
         system("taskkill /F /T /fi \"WINDOWTITLE eq JAP/JonDo*\"");
         return dwExitCode;
-    }
-        
+    }           
 	int result = prepare(lpCmdLine);
-
+#ifdef DEBUG_ENABLED	
+    fprintf(fp, "%s\n", lpCmdLine);
+    fclose(fp);
+#endif
+    
 	if (result == ERROR_ALREADY_EXISTS)
 	{
         // Feature #1892 - malware recognition problem

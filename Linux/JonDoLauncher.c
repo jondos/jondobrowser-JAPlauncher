@@ -5,7 +5,6 @@
 #include <cstring>
 #include <array>
 #include <unistd.h>
-//#include <fstream>
 
 using namespace std;
 
@@ -25,11 +24,7 @@ string exec(const char* cmd) {
 }
 
 int main(int argc, char*argv[]){
-    //ofstream out("./JonDo/out.txt", ofstream::out);
-    //out << argc << endl;
-    if(argc == 2){
-        //out << argv[0] << endl;
-        //out << argv[1] << endl;
+    if(argc >= 2){
     	string res = exec("ps aux | grep \"[J]AP.jar\" | wc -l");
         bool isJAPRunning = false;
         for(int i = 0; i < res.length(); i++){
@@ -40,16 +35,20 @@ int main(int argc, char*argv[]){
                 break;
             }
         }
-        //out << isJAPRunning << endl;
-        //out << strcmp(argv[1], "on") << endl;
-        //out << strcmp(argv[1], "off") << endl;
     	if(!isJAPRunning && strcmp(argv[1], "on") == 0){
-    		system("java -jar ./JonDo/JAP.jar --hideUpdate &");
+            char command[1024];
+            strcpy(command, "java -jar ./JonDo/JAP.jar");
+            for (int i = 2; i < argc; i++){
+                strcat(command, " ");
+                strcat(command, argv[i]);
+            }
+            strcat(command, " &");
+            printf("%s\n", command);
+    		system(command);
     	}
         if(isJAPRunning && strcmp(argv[1], "off") == 0){
             system("pkill -f 'java.*JAP.jar*' &");
         }
     }
-    //out.close();
 }
 	
