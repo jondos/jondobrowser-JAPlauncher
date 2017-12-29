@@ -60,7 +60,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,
     	escapeCharFound = FALSE;
     	paramLen = strlen(lpCmdLine);
     	for (i = 0; i < paramLen - 1; i++){
-    		if(lpCmdLine[i] == '\\' && lpCmdLine[i + 1] == '\"'){
+    		if((lpCmdLine[i] == '\\' && lpCmdLine[i + 1] == '\"') ||
+               (lpCmdLine[i] == '\"' && lpCmdLine[i + 1] == '\"')){
     			escapeCharFound = TRUE;
     			for (j = i; j >= 1; j--){
     				lpCmdLine[j] = lpCmdLine[j - 1];
